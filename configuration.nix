@@ -1,4 +1,5 @@
-{
+{ config,
+  pkgs, 
   inputs,
   ...
 }:
@@ -25,7 +26,15 @@ in
   nixpkgs.pkgs = pkgs;
 
   nix.settings.extra-experimental-features = [ "nix-command" "flakes" ];
-
+  
+  # Disable documentation building to avoid sandbox issues
+  documentation = {
+    enable = true;
+    doc.enable = false;
+    man.enable = true;
+    dev.enable = false;
+    nixos.enable = false;
+  };
   imports = [
     inputs.hydenix.inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
@@ -61,6 +70,7 @@ in
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    backupFileExtension = "backup";  # Add backup extension for existing files
     extraSpecialArgs = {
       inherit inputs;
     };
@@ -105,38 +115,12 @@ in
   hardware.bluetooth.enable = true;
   
   services = {
-	# aria2 = {
-  #    enable = true;
-	#	     rpcSecretFile = "/run/secrets/aria2-rpc-token.txt";
-	#	     openPorts = true;
-	#	     serviceUMask = "0002";
-	#	     settings = {
-	#		     enable-rpc = true;
-	#		     rpc-listen-port = "6800";
-	#		     dir = "/home/t0psh31f/Downloads/Aria2/";
-	#		     save-session = "home/t0psh31f/Downloads/Aria2/Resume/aria2.session";
-	#		       };
-	#	       };
-			
 	adguardhome.enable = true;
-  atuin.enable = true;
-	eternal-terminal.enable = true;
-#	headscale.enable = true;
-# home-assistant.enable = true;
+ 	atuin.enable = true;
+	# eternal-terminal.enable = true;
 	homepage-dashboard.enable = true;
-#	karakeep = {
-#		enable = true;
-#		browser.enable = true;
-#		meilisearch.enable = true;
-#			};
-#	lasuite-docs.enable = true;
-#	n8n.enable = true;
-#	rustdesk-server = {
-#				enable = true;
-#				signal.enable = true;
-#				relay.enable = true;
-#	          };
-#	tailscale.enable = true;
+#	lasuite-docs.enable = false;
+ 	gvfs.enable = true;
 	postgresql = {
 		enable = true;
 		package = pkgs.postgresql_15;
@@ -188,6 +172,7 @@ in
 	};
   
 programs = { 
+  appimage.binfmt = true;
 	adb.enable = true;
 	bat.enable = true;
 	direnv = {
@@ -200,11 +185,11 @@ programs = {
 	kdeconnect.enable = true;
 	lazygit.enable = true;
 	nh = {
-   		 enable = true;
-  	  	 clean.enable = true;
-         clean.extraArgs = "--keep-since 5d --keep 5";
-  	  	 flake = "/home/t0psh31f/hydenix";
- 		     };
+   		enable = true;
+  	 #  clean.enable = true;
+     #  clean.extraArgs = "--keep-since 5d --keep 5";
+  	 #  flake = "/home/t0psh31f/hydenix";
+ 		    };
 	steam.enable = true;
 	tmux.enable = true;
 	thunderbird.enable = true;
@@ -223,26 +208,28 @@ programs = {
       "networkmanager" 
       "video" 
       "aria2"
+      "docker"
+      "podman"
+      "virtio"
 	    "adbusers"
     ];
     shell = pkgs.zsh; 
   };
 
-  nix.gc = {
-   automatic = true;
-   dates = "weekly";
-   options = "--delete-older-than 30d";
-	};	
+ # nix.gc = {
+ #  automatic = true;
+ #  dates = "weekly";
+ #  options = "--delete-older-than 30d";
+ #	};	
 
     # Enable common container config files in /etc/containers
   virtualisation.containers.enable = true;
   virtualisation = {
     podman = {
       enable = true;
-
+      dockerSocket.enable = true;
       # Create a `docker` alias for podman, to use it as a drop-in replacement
       dockerCompat = true;
-
       # Required for containers under podman-compose to be able to talk to each other.
       defaultNetwork.settings.dns_enabled = true;
     };
