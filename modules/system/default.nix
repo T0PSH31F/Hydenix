@@ -1,9 +1,8 @@
-{ pkgs,  ... }:
+{ config, pkgs,  ... }:
 {
 
   imports = [
- #   inputs.nix-search-tv.nixosModules.default
-    # ./example.nix - add your modules here
+    #./fhs.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -39,6 +38,7 @@
     # gophish
     # go-exploitdb
     # ghost # android remote post-exploitation framework
+    # h8mail
     kanha # webapp pentest suite
     metasploit
     # mongoaudit
@@ -84,7 +84,6 @@
 
     dive
     docker
-    nh
     nil
     nixfmt-tree
     nix-init
@@ -114,8 +113,6 @@
 
 # System Utilities
 
-    notcurses
-
     adbfs-rootless
     android-tools
     apfs-fuse
@@ -125,7 +122,7 @@
     coreutils 
     # curlftpfs
     diffutils
-    enum4linux
+   # enum4linux
     exiftool
     exiflooter
     file
@@ -133,19 +130,21 @@
     ff2mpv-rust
     ffmpeg-full
     ffmpegthumbnailer
-    fuse 
-    fuseiso 
+   # fuse 
+   # fuseiso 
     encfs  
-    ghostscript
+   # ghostscript
     gnupg
-    google-drive-ocamlfuse
+   # google-drive-ocamlfuse
+    heimdall 
+    heimdall-gui
     imagemagick
     kdePackages.konsole
-    libcdio 
-    lynx 
-    mailutils
+   # libcdio 
+   # lynx 
+   # mailutils
     mc   
-    mkvtoolnix
+   # mkvtoolnix
     mtpfs
     jmtpfs
     mlocate 
@@ -153,12 +152,12 @@
     ocs-url
     pdftk 
     pdfchain
-    poppler
-    poppler-utils 
+   # poppler
+   # poppler-utils 
     procps 
     psmisc 
-    pv 
-    recode 
+   # pv 
+   # recode 
     samba4Full
     smbnetfs 
     shared-mime-info 
@@ -183,13 +182,13 @@
     btop
     gotop
     gkrellm
-    iftop 
-    netop
-    ntopng
+   # iftop 
+   # netop
+   # ntopng
     nix-top
     nix-output-monitor
-    powertop
-    zfxtop
+   # powertop
+   # zfxtop
 
 # Compression Algo's
 
